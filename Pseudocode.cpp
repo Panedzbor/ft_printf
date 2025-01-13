@@ -5,8 +5,8 @@
 //__while string[index] is not '\0'
 //____if string[index] is not '%' => write(1, &string[index], 1);
 //____else =>
-//______if string[index + 1] is '%' => print out '%', increment index
-//______else =>
+//______//if string[index + 1] is '%' => print out '%', increment index
+//______//else =>
 //________save specifier with flags:
 //__________declare a const char pointer, create a new index, count length of specifer (while string[index2] is not alpha and not '\0' => counter++; index2++; if string[index2] is alpha => counter++) *if no alpha encountered until the end, then it should be just printed out
 //__________malloc space for flag and assign relevant chars to it
