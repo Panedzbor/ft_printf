@@ -16,10 +16,11 @@
 # include "./libft/libft.h"
 # include <stdarg.h>
 
-char *endings = "cspdiuxX%";
-char *flags = "-0.# +";
-char *numerics = "123456789*";
-char *flags_numerics = "-0.# +123456789*";
+static const char *endings = "cspdiuxX%";
+//static const char *flags = "-0.# +";
+static const char *numerics = "0123456789*";
+//static const char *digits = "0123456789";
+static const char *flags_numerics = "-0.# +123456789*";
 
 int	ft_printf(const char *, ...);
 
