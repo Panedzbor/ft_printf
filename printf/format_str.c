@@ -25,13 +25,13 @@ void    format_string(char *str, size_t offset, bool valid, va_list args)
 
 static void valid_format(char *str, size_t offset, va_list args)
 {
-    char    fs;
+    char    end;
 
-    fs = str[offset];
-    /* if (fs == 'c' || fs == 's' || fs == '%') */
-//        format_text(str, offset, fs, args);
-        /* format_text(fs, args); */
+    end = str[offset];
+    /* if (end == 'c' || end == 's' || end == '%') */
+//        format_text(str, offset, end, args);
+        /* format_text(end, args); */
     /* else */
-//        format_number(str, offset, fs, args);
-        format_number(fs, args);
+//        format_number(str, offset, end, args);
+        format_number(str, offset, end, args);
 }

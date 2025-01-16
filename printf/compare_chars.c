@@ -37,3 +37,4 @@ int  pf_isflagnum(char c, int mode)
     }
     return (0);
 }
+

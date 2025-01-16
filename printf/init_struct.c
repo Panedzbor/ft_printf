@@ -20,8 +20,9 @@ void    init_struct(t_form *mod)
     while (i < 4)
     {
         mod->flags[i] = '_';
+        i++;
     }
-    mod->flags[4] = '\0';
+    mod->flags[5] = '\0';
     mod->precis = 0;
     mod->width = 0;
 }

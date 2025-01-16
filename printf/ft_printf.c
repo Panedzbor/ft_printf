@@ -14,9 +14,6 @@
 
 static size_t   check_specifier(char *start, bool *valid);
 
-//file 7
-void    extract_format_val();
-
 int ft_printf(const char *fstring, ...)
 {
     va_list args;

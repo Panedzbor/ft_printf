@@ -12,19 +12,23 @@
 
 #include "libftprintf.h"
 
-static void extract_flags();
-static void extract_numerics();
+static void extract_flags(char c, t_form *mod);
+static void extract_numerics(char *str, char ending, va_list args, t_form *mod);
 static void get_asterisk_val(va_list args, t_form *mod, bool *w);
+static int get_number(char *str, t_form *mod, bool *w);
 
 void    extract_format_val(char *str, size_t offset, va_list args, t_form *mod)
 {
     int i;
 
     i = 1;
-    while (str[i] < offset)
+    while (i < offset)
     {
         if ((pf_isflagnum(str[i], 1) == 1 && str[i] != '0') || str[i] == '.')
-            break ;
+        {
+          printf("Yuhu\n");
+          break ;
+        }
         extract_flags(str[i], mod);
         i++;
     }
@@ -53,13 +57,16 @@ static void extract_numerics(char *str, char ending, va_list args, t_form *mod)
     
     w = true;
     i = 0;
-    while (str[i + 1] != '\0')
+    while (str[i] != ending)
     {
         jump = 0;
-        if (str[i] == "*")
+        if (str[i] == '*')
             get_asterisk_val(args, mod, &w);
         else if (str[i] == '.')
+        {
             w = false;
+            mod->flags[3] = '.';
+        }
         else if (ft_isdigit(str[i]) == 1)
             jump = get_number(&str[i], mod, &w) - 1;
         i += jump;
@@ -90,7 +97,7 @@ static int get_number(char *str, t_form *mod, bool *w)
     s = ft_substr(str, 0, i);
     number = ft_atoi((const char *)s);
     free(s);
-    if (w)
+    if (*w)
     {
         mod->width = number;
         *w = false;

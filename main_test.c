@@ -2,6 +2,6 @@
 
 int main()
 {
-    ft_printf("%*.*d %6u\n", 5, 6);
+    ft_printf("%10.7d", -12345);
     return 0;
 }

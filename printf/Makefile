@@ -21,7 +21,8 @@ IFLAGS = -I. -Ilibft/
 LFLAGS = -L. -Llibft/
 
 # files
-SOURCES = ft_printf.c
+#SOURCES = ft_printf.c
+SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:%.c=%.o)
 
 LIBFT = ./libft/libft.a
@@ -35,8 +36,14 @@ $(LIBFT):
 $(NAME): $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 
+#%.o: %.c libftprintf.h
+#	$(CC) $(CFLAGS) -c $< -o $@
 %.o: %.c libftprintf.h
+ifeq ($(MAKECMDGOALS),test)
+	$(CC) $(TFLAGS) -c $< -o $@
+else
 	$(CC) $(CFLAGS) -c $< -o $@
+endif
 
 clean:
 	rm -f $(OBJECTS)
