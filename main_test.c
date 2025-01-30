@@ -2,6 +2,7 @@
 
 int main()
 {
-    ft_printf("%10.7d", -12345);
+    ft_printf("%10.7d", 1);
+    printf("\n");
     return 0;
 }
