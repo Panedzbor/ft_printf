@@ -37,10 +37,17 @@ void    valid_numerics(char *str, size_t offset, bool *val);
 void    format_string(char *str, size_t offset, bool valid, va_list args);
 void    format_number(char *str, size_t offset, char fs, va_list args);
 void    format_d(char *str, size_t offset, va_list args);
+void    format_u(char *str, size_t offset, va_list args);
+void    format_x(char *str, size_t offset, va_list args);
 int     pf_isflagnum(char c, int mode);
 void    init_struct(t_form *mod);
+void    init_buf(char buf[3], char end);
 void    extract_format_val(char *str, size_t offset, va_list args, t_form *mod);
 int     get_len_d(int num, int *sign, char *numstr);
-void    allign_left(t_form mod, int num, int *sign, char *numstr);
+void    allign_left_d(t_form mod, int num, int *sign, char *numstr);
+void    allign_left_u(t_form mod, int len, char *numstr);
+void    allign_left_x(t_form mod, int len, char *numstr, char end);
+char	*ft_utoa(unsigned int n);
+char	*ft_xtoa(unsigned int n);
 
 #endif

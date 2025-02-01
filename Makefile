@@ -2,7 +2,6 @@
 all:
 	$(MAKE) test -C ./printf
 
-test:
-	all
+test: all
 	
 .PHONY: all test

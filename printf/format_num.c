@@ -19,13 +19,12 @@ void    format_number(char *str, size_t offset, char end, va_list args)
 {
     if (end == 'd' || end == 'i')
         format_d(str, offset, args);
-/*     else if (end == 'u') */
-//        f_unsigned(str, offset, args);
-      /*   f_unsigned(args); */
-/*     else if (end == 'x' || end == 'X')
-        f_hexadecimal(str, offset, args);
-    else if (end == 'p')
-        f_pointer(str, offset, args); */
+     else if (end == 'u')
+        format_u(str, offset, args);
+     else if (end == 'x' || end == 'X')
+        format_x(str, offset, args);
+    //else if (end == 'p')
+    //    f_pointer(str, offset, args); 
 }
 
 

@@ -50,7 +50,7 @@ static void     write_first_ch(char plus_or_space, int num, int *sign)
     if (plus_or_space == '+' && num >= 0)
     {
         write(1, "+", 1);
-        sign = 1;
+        *sign = 1;
     }
     else if (plus_or_space == ' ' && num >= 0)
         write(1, " ", 1);
@@ -88,7 +88,7 @@ static void    write_rest(t_form mod, int num, int *sign, char* numstr)
     fill[1] = '\0';
     len = get_len_d(num, sign, numstr);
     if (mod.flags[2] == '-')
-        allign_left(mod, num, sign, numstr);
+        allign_left_d(mod, num, sign, numstr);
     else
     {
         fill_dec(mod, num, *sign, fill);
