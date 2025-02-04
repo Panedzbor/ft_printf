@@ -12,75 +12,33 @@
 
 #include "libftprintf.h"
 
-void    allign_left_d(t_form mod, int num, int *sign, char *numstr)
+void    allign_left(t_form mod, signed int snum, char *numstr)
 {
-    int i;
-    int len;
+    write_sign(mod, snum);
+    write_space(mod, snum);
+    write_prefix(mod);
+    precis_fill(mod);
+    write_arg(numstr, mod.end, mod.trunc);
+    field_fill_num(mod, snum, ' ');
+}
 
-    len = get_len_d(num, sign, numstr);
-    if (num < 0)
-        write(1, "-", 1);
-    i = 0;
-    while (i < mod.precis - len)
+void    allign_right(t_form mod, signed int snum, char *numstr)
+{
+    if (mod.flags[2] != '0' || mod.flags[3] == '.')
     {
-        write(1, "0", 1);
-        i++;
+        write_space(mod, snum);
+        field_fill_num(mod, snum, ' ');
+        write_sign(mod, snum);
+        write_prefix(mod);
+        precis_fill(mod);
+        write_arg(numstr, mod.end, mod.trunc);
     }
-    if (num < 0)
-        write(1, &numstr[1], len);
     else
-        write(1, numstr, len);
-    i = 0;
-    while (i < mod.width - mod.precis - *sign && i < mod.width - len - *sign)
     {
-        write(1, " ", 1);
-        i++;
-    }   
-}
-
-void    allign_left_u(t_form mod, int len, char *numstr)
-{
-    int i;
-
-    i = 0;
-    while (i < mod.precis - len)
-    {
-        write(1, "0", 1);
-        i++;
+        write_sign(mod, snum);
+        write_space(mod, snum);
+        write_prefix(mod);
+        field_fill_num(mod, snum, '0');
+        write_arg(numstr, mod.end, mod.trunc);
     }
-    write(1, numstr, len);
-    i = 0;
-    while (i < mod.width - mod.precis && i < mod.width - len)
-    {
-        write(1, " ", 1);
-        i++;
-    }   
-}
-
-void    allign_left_x(t_form mod, int len, char *numstr, char end)
-{
-    int i;
-    int h;
-    char buf[3];
-
-    init_buf(buf, end);
-    h = 0;
-    if (mod.flags[0] == '#')
-    {
-        h = 2;
-        write(1, buf, 2);
-    }
-    i = 0;
-    while (i < mod.precis - len)
-    {
-        write(1, "0", 1);
-        i++;
-    }
-    capitalize_hex(numstr, len, end);
-    i = 0;
-    while (i < mod.width - mod.precis - h && i < mod.width - len - h)
-    {
-        write(1, " ", 1);
-        i++;
-    }   
 }

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <io.h>
+#include "pch.h"
 //#include <unistd.h>
 //#include "./printf/libftprintf.h"
 
@@ -64,6 +65,7 @@ char	*ft_itoa(int n);
 void    allign_left_x(t_form mod, int len, char *numstr, char end);
 void    allign_left_u(t_form mod, int len, char *numstr);
 void    allign_left_d(t_form mod, int num, int *sign, char *numstr);
+void    allign_left_p(t_form mod, int len, char* numstr, int sign);
 static void write_rest2(t_form mod, unsigned int num, char* numstr, int len);
 static void fill_uns(t_form mod, unsigned int num, char *fill, int len);
 void    format_u(char *str, size_t offset, va_list args);
@@ -72,13 +74,20 @@ static void		convert_u(char *number, unsigned int n, int digits);
 char	*ft_utoa(unsigned int n);
 static void write_rest3(t_form mod, unsigned int num, char* numstr, char end);
 static void fill_hex(t_form mod, unsigned int num, char end, int len);
-void    format_h(char *str, size_t offset, va_list args);
+void    format_x(char *str, size_t offset, va_list args);
 static int		count_digits_x(unsigned int n);
 static void		convert_x(char *number, unsigned int n, int digits);
 char	*ft_xtoa(unsigned int n);
 static void capitalize_hex(char *numstr, int len, char end);
 int	ft_toupper(int ch);
 void    init_buf(char buf[3], char end);
+static void write_first_chp(char plus_or_space, uintptr_t num, int *sign);
+static void write_restp(t_form mod, uintptr_t num, char* numstr, int sign);
+static void fill_ptr(t_form mod, uintptr_t num, int sign, int len);
+void    format_p(char *str, size_t offset, va_list args);
+static int		count_digitsp(uintptr_t n);
+static void		convertp(char *number, uintptr_t n, int digits);
+char	*ft_ptoa(uintptr_t n);
 
 int main()
 {
@@ -326,9 +335,9 @@ void    format_number(char *str, size_t offset, char end, va_list args)
      else if (end == 'u')
         format_u(str, offset, args);
      else if (end == 'x' || end == 'X')
-        format_h(str, offset, args);
-    //else if (end == 'p')
-    //    f_pointer(str, offset, args); 
+        format_x(str, offset, args);
+    else if (end == 'p')
+        format_p(str, offset, args); 
 }
 
 
@@ -910,8 +919,8 @@ static int	count_digits_u(unsigned int n)
 
 static void	convert_u(char *number, unsigned int n, int digits)
 {
-	int	r;
-	int	i;
+	unsigned int	r;
+	unsigned int	i;
 
 	r = n % 10;
 	i = n / 10;
@@ -927,7 +936,7 @@ static void	convert_u(char *number, unsigned int n, int digits)
 	}
 }
 
-void    format_h(char *str, size_t offset, va_list args)
+void    format_x(char *str, size_t offset, va_list args)
 {
     unsigned int num;
     char    *numstr;
@@ -1088,4 +1097,157 @@ void    init_buf(char buf[3], char end)
     buf[0] = '0';
     buf[1] = end;
     buf[2] = '\0';
+}
+
+
+void    format_p(char *str, size_t offset, va_list args)
+{
+    uintptr_t   num;
+    void        *ptr;
+    char        *numstr;
+    t_form      mod;
+    int         sign;
+
+    sign = 0;
+    init_struct(&mod);
+    extract_format_val(str, offset, args, &mod);
+    ptr = va_arg(args, void *);
+    num = (uintptr_t)ptr;
+    numstr = ft_ptoa(num);
+    write_first_chp(mod.flags[1], num, &sign);
+    write_restp(mod, num, numstr, sign);
+    free(numstr);
+}
+
+static void     write_first_chp(char plus_or_space, uintptr_t num, int *sign)
+{
+    if (plus_or_space == '+' && num >= 0)
+    {
+        _write(1, "+", 1);
+        *sign = 1;
+    }
+    else if (plus_or_space == ' ' && num >= 0)
+        _write(1, " ", 1);
+}
+
+static void    write_restp(t_form mod, uintptr_t num, char* numstr, int sign)
+{
+    int     i;
+    int     len;
+
+    len = ft_strlen(numstr) + sign;
+    if (mod.flags[2] == '-')
+        allign_left_p(mod, len, numstr, sign);
+    else
+    {
+        fill_ptr(mod, num, sign, len);
+        if (mod.precis > len - sign)
+            _write(1, "0x", 2);
+        i = 0;
+        while (i < mod.precis - len - sign)
+        {
+            _write(1, "0", 1);
+            i++;
+        }
+        if (mod.flags[2] != '0' && mod.precis <= len - sign)
+            _write(1, "0x", 2);
+        _write(1, numstr, len); 
+    }
+}
+
+static void fill_ptr(t_form mod, uintptr_t num, int sign, int len)
+{
+    int i;
+    char    *numstr;
+    char    fill[2];
+    
+    fill[0] = ' ';
+    fill[1] = '\0';
+    numstr = ft_ptoa(num); 
+    if (mod.flags[2] == '0' && mod.flags[3] != '.')
+        fill[0] = '0';
+    if (mod.flags[2] == '0')
+        _write(1, "0x", 2);
+    i = 0;
+    while (i < mod.width - mod.precis - 2 - sign && i < mod.width - len - sign - 2)
+    {
+        _write(1, fill, 1);
+        i++;
+    }
+    free(numstr);
+}
+
+void    allign_left_p(t_form mod, int len, char *numstr, int sign)
+{
+    int i;
+
+    _write(1, "0x", 2);
+    i = 0;
+    while (i < mod.precis - len - sign)
+    {
+        _write(1, "0", 1);
+        i++;
+    }
+    _write(1, numstr, len - sign);
+    i = 0;
+    while (i < mod.width - mod.precis - 2 - sign && i < mod.width - len - 2)
+    {
+        _write(1, " ", 1);
+        i++;
+    }   
+}
+
+
+char	*ft_ptoa(uintptr_t n)
+{
+	int					digits;
+	char				*ptr;
+
+	digits = count_digitsp(n);
+	ptr = (char *)ft_calloc(digits + 1, sizeof(char));
+	if (ptr == NULL)
+		return (NULL);
+	convertp(ptr, n, digits);
+	ptr[digits] = '\0';
+	return (ptr);
+}
+
+static int	count_digitsp(uintptr_t n)
+{
+	int	counter;
+
+	counter = 0;
+	if (n == 0)
+		return (1);
+	while (n > 0)
+	{
+		n = n / 16;
+		counter++;
+	}
+	return (counter);
+}
+
+static void	convertp(char *number, uintptr_t n, int digits)
+{
+	uintptr_t	r;
+	uintptr_t	i;
+
+	r = n % 16;
+	i = n / 16;
+	if (r < 10)
+		number[digits - 1] = r + '0';
+	else
+		number[digits - 1] = r - 10 + 'a';
+	digits--;
+	while (i > 0)
+	{
+		n = i;
+		r = n % 16;
+		i = n / 16;
+		if (r < 10)
+			number[digits - 1] = r + '0';
+		else
+			number[digits - 1] = r - 10 + 'a';
+		digits--;
+	}
 }

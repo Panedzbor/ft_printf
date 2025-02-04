@@ -24,7 +24,10 @@ void    init_struct(t_form *mod)
     }
     mod->flags[4] = '\0';
     mod->precis = 0;
+    mod->trunc = 0;
     mod->width = 0;
+    mod->len = 0;
+    mod->end = '0';
 }
 
 void    init_buf(char buf[3], char end)
@@ -32,4 +35,16 @@ void    init_buf(char buf[3], char end)
     buf[0] = '0';
     buf[1] = end;
     buf[2] = '\0';
+}
+
+void    init_arr(int *arr, int dim)
+{
+    int i;
+
+    i = 0;
+    while (i < dim)
+    {
+        arr[i] = 0;
+        i++;
+    }
 }

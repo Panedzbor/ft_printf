@@ -32,6 +32,7 @@ void    extract_format_val(char *str, size_t offset, va_list args, t_form *mod)
         extract_flags(str[i], mod);
         i++;
     }
+    mod->end = str[offset];
     extract_numerics(&str[i], str[offset], args, mod);
 }
 
@@ -72,6 +73,8 @@ static void extract_numerics(char *str, char ending, va_list args, t_form *mod)
         i += jump;
         i++;
     }
+    if (mod->trunc == 0 && mod->flags[3] != '.')
+        mod->trunc = mod->len;
 }
 
 static void get_asterisk_val(va_list args, t_form *mod, bool *w)
@@ -103,6 +106,11 @@ static int get_number(char *str, t_form *mod, bool *w)
         *w = false;
     }
     else
-        mod->precis = number;
+    {
+        if (mod->end != 'c' && mod->end != 's')
+            mod->precis = number;
+        if (mod->end == 's')
+            mod->trunc = number;
+    }
     return (i);
 }

@@ -32,7 +32,7 @@ int ft_printf(const char *fstring, ...)
         {
             valid = true;
             fend = check_specifier((char *)&fstring[pos], &valid);
-            format_string((char *)&fstring[pos], fend, valid, args);
+            format_value((char *)&fstring[pos], fend, valid, args);
             pos += fend + 1;
             continue ;
         }

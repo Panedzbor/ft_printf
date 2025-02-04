@@ -46,8 +46,8 @@ static int	count_digits(unsigned int n)
 
 static void	convert(char *number, unsigned int n, int digits)
 {
-	int	r;
-	int	i;
+	unsigned int	r;
+	unsigned int	i;
 
 	r = n % 10;
 	i = n / 10;
