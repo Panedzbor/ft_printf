@@ -20,6 +20,7 @@ int get_sum(t_form mod, signed int snum)
 {
     int sppl[4]; //sign prefix precision value_len
     int sum;
+    int trunc;
 
     init_arr(sppl, 4);
     sppl[0] = define_sign(mod, snum);
@@ -28,13 +29,17 @@ int get_sum(t_form mod, signed int snum)
         sppl[2] = 12;
     else
     {
-        if (mod.end == 's')
-            sppl[2] = -mod.trunc;
-        else
+       // if (mod.end == 's')
+         //   sppl[2] = -(mod.trunc - mod.len);
+        //else
             sppl[2] = mod.precis;
     }
-    sppl[3] = mod.len;
-    printf("summing: %d %d %d %d\n", sppl[0], sppl[1], sppl[2], sppl[3]);
+    trunc = 0;
+    if (mod.len - mod.trunc < 0)
+        trunc = 0;
+    else
+        trunc = mod.len - mod.trunc;
+    sppl[3] = mod.len - trunc;
     sum = sum_val(sppl);
     return (sum);
 }

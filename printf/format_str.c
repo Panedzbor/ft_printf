@@ -30,11 +30,11 @@ static void    format_c(char *str, size_t offset, va_list args)
     t_form  mod;
 
     init_struct(&mod);
-    extract_format_val(str, offset, args, &mod);
     c = va_arg(args, int);
+    mod.len = 1;
+    extract_format_val(str, offset, args, &mod);
     val[0] = c;
     val[1] = '\0';
-    mod.len = 1;
     if (mod.flags[2] == '-')
         allign_left(mod, 0, val);
     else
@@ -47,11 +47,9 @@ static void    format_s(char *str, size_t offset, va_list args)
     t_form  mod;
 
     init_struct(&mod);
-    extract_format_val(str, offset, args, &mod);
     string = va_arg(args, char *);
-    printf("got this from va_arg: %s\n", string);
     mod.len = ft_strlen(string);
-    printf("len = %d\n", mod.len);
+    extract_format_val(str, offset, args, &mod);
     if (mod.flags[2] == '-')
         allign_left(mod, 0, string);
     else

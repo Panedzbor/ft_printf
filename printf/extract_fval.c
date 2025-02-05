@@ -25,10 +25,7 @@ void    extract_format_val(char *str, size_t offset, va_list args, t_form *mod)
     while (i < offset)
     {
         if ((pf_isflagnum(str[i], 1) == 1 && str[i] != '0') || str[i] == '.')
-        //{
-          //printf("Yuhu\n");//test
           break ;
-        //}
         extract_flags(str[i], mod);
         i++;
     }

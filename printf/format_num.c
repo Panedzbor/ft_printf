@@ -36,10 +36,10 @@ static void    format_d(char *str, size_t offset, va_list args)
     t_form  mod;
 
     init_struct(&mod);
-    extract_format_val(str, offset, args, &mod);
     num = va_arg(args, int);
     numstr = ft_itoa(num);
     mod.len = ft_strlen(numstr);
+    extract_format_val(str, offset, args, &mod);
     if (num < 0)
         mod.len -= 1;
     if (mod.flags[2] == '-')
@@ -56,10 +56,10 @@ static void    format_u(char *str, size_t offset, va_list args)
     t_form  mod;
 
     init_struct(&mod);
-    extract_format_val(str, offset, args, &mod);
     num = va_arg(args, unsigned int);
     numstr = ft_utoa(num);
     mod.len = ft_strlen(numstr);
+    extract_format_val(str, offset, args, &mod);
     if (mod.flags[2] == '-')
         allign_left(mod, 0, numstr);
     else
@@ -74,10 +74,10 @@ static void    format_x(char *str, size_t offset, va_list args)
     t_form      mod;
 
     init_struct(&mod);
-    extract_format_val(str, offset, args, &mod);
     num = va_arg(args, uintptr_t);
     numstr = ft_xtoa((unsigned int)num);
     mod.len = ft_strlen(numstr);
+    extract_format_val(str, offset, args, &mod);
     if (mod.flags[2] == '-')
         allign_left(mod, 0, numstr);
     else
@@ -93,11 +93,11 @@ static void    format_p(char *str, size_t offset, va_list args)
     t_form      mod;
 
     init_struct(&mod);
-    extract_format_val(str, offset, args, &mod);
     ptr = va_arg(args, void *);
     num = (uintptr_t)ptr;
     numstr = ft_ptoa(num);
     mod.len = ft_strlen(numstr);
+    extract_format_val(str, offset, args, &mod);
     if (mod.flags[2] == '-')
         allign_left(mod, 0, numstr);
     else
@@ -106,11 +106,3 @@ static void    format_p(char *str, size_t offset, va_list args)
 }
 
 
-/* //void    f_unsigned(char *str, size_t offset, va_list args)
-static void    f_unsigned(va_list args)
-{
-    unsigned int num;
-
-    num = va_arg(args, unsigned int);
-    printf("%u\n", num);//test
-} */

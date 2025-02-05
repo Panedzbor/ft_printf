@@ -39,7 +39,6 @@ int ft_printf(const char *fstring, ...)
         write(1, &fstring[pos], 1);
         pos++;
     }
-    //printf("\n%s\n", valid == true ? "true" : "false");//test
     va_end(args);
     return ((int)pos);
 }
