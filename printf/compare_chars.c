@@ -38,3 +38,31 @@ int  pf_isflagnum(char c, int mode)
     return (0);
 }
 
+int  pf_isflag(char c)
+{
+    int n;
+
+    n = 0;
+    while (flags[n] != '\0')
+    {
+        if (c == flags[n])
+            return (1);
+        n++;
+    }
+    return (0);
+}
+
+/*int pf_isnum(char c)
+{
+    int n;
+
+    n = 0;
+    while (flags[n] != '\0')
+    {
+        if (c == flags[n])
+            return (1);
+        n++;
+    }
+    return (0);
+}*/
+

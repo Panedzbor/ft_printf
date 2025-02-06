@@ -2,7 +2,7 @@
 
 int main()
 {
-    const char *flag = "\"%10.10%\"";
+    const char *flag = "%.#."; // %.
     char *x = "42 Berlin";
 //%020.15p
 //% 15p
@@ -13,7 +13,7 @@ int main()
     printf("\n");
     return 0;
 }
-//edge cases: %, %%, %%%%%%..., 0, 1, "s", "", "\0", '\n', '\0', '"', "\", int overflow, max min,
+//edge cases: %, %%, %%%%%%..., 0, 1, "s", "", "\0", '\n', '\0', '"', "\", int overflow, max min, several specifiers with args
 
 /*int main()
 {

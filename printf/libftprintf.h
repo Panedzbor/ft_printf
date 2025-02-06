@@ -28,7 +28,7 @@ typedef struct s_formatting
 } t_form;
 
 static const char *endings = "cspdiuxX%";
-//static const char *flags = "-0.# +";
+static const char *flags = "-0# +";
 static const char *numerics = "0123456789*";
 //static const char *digits = "0123456789";
 static const char *flags_numerics = "-0.# +123456789*";
@@ -36,8 +36,9 @@ static const char *flags_numerics = "-0.# +123456789*";
 
 
 int     ft_printf(const char *, ...);
-size_t  check_dependencies(char *start, bool *val);
-void    valid_numerics(char *str, size_t offset, bool *val);
+//size_t  check_dependencies(char *start, bool *val);
+size_t   find_ending(char *start, bool *val);
+//void    valid_numerics(char *str, size_t offset, bool *val);
 void    format_value(char *str, size_t offset, bool valid, va_list args);
 void    format_number(char *str, size_t offset, char fs, va_list args);
 void    format_text(char *str, size_t offset, char end, va_list args);
@@ -46,6 +47,7 @@ void    format_text(char *str, size_t offset, char end, va_list args);
 //void    format_x(char *str, size_t offset, va_list args);
 //void    format_p(char *str, size_t offset, va_list args);
 int     pf_isflagnum(char c, int mode);
+int     pf_isflag(char c);
 void    init_struct(t_form *mod);
 void    init_buf(char buf[3], char end);
 void    init_arr(int *arr, int dim);

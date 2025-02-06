@@ -12,89 +12,89 @@
 
 #include "libftprintf.h"
 
-static size_t   valid_ending(char *str, bool *val);
-static void valid_chars(char *str, size_t offset, bool *val);
-static void valid_dots(char *str, size_t offset, bool *val);
+static bool valid_chars(char *c, bool *flag, bool *dot);
+static bool valid_dot(bool *flag, bool *dot);
+static bool valid_asterisk(char *c, bool *flag);
+static bool valid_digit(char *c, bool *flag);
 
-size_t  check_dependencies(char *start, bool *val)
-{
-    size_t  offset;
-
-    offset = valid_ending(start, val);
-    if (*val == true)
-        valid_chars(start, offset, val);
-    if (*val == true)
-        valid_dots(start, offset, val);
-    if (*val == true)
-        valid_numerics(start, offset, val);
-    return (offset);
-}
-
-static size_t   valid_ending(char *str, bool *val)
+size_t   find_ending(char *start, bool *val)
 {
     size_t  i;
     size_t  e;
+    bool    fl_dt[2];
 
+    fl_dt[0] = true;
+    fl_dt[1] = false;
     i = 1;
-    while (str[i] != '\0')
+    while (start[i] != '\0')
     {
         e = 0;
         while (endings[e] != '\0')
         {
-            if (endings[e] == str[i])
-                return i;
+            if (endings[e] == start[i])
+                return (i);
             e++;
+        }
+        if (!(fl_dt[0] && pf_isflag(start[i]) == 1))
+        {
+            if (!(valid_chars(&start[i], &fl_dt[0], &fl_dt[1])))
+                break ;
         }
         i++;
     }
     *val = false;
-    return (i - 1);
+    return (i);
 }
 
-static void valid_chars(char *str, size_t offset, bool *val)
+static bool valid_chars(char *c, bool *flag, bool *dot)
 {
-    size_t  i;
-    size_t  n;
-    bool    invalid_char;
-
-    invalid_char = false;
-    i = 1;
-    while (i < offset)
+    if (pf_isflag(*c) == 1 && !*flag)
+        return (false);
+    if (*c == '.')
     {
-        invalid_char = true;
-        if (pf_isflagnum(str[i], 2) == 1)
-            invalid_char = false;
-        if (invalid_char == true)
-        {    
-            *val = false;
-            return ;
-        }
-        i++;
+        if (!(valid_dot(flag, dot)))
+            return (false);
     }
+    else if (c == '*')
+    {
+        if (!(valid_asterisk(c, flag)))
+            return (false);
+    }
+    else if (ft_isdigit(*c) == 1)    
+    {
+        if (!(valid_digit(c, flag)))
+            return (false);
+    }
+    else
+        return (false);
+    return (true);
 }
 
-static void valid_dots(char *str, size_t offset, bool *val)
+static bool valid_dot(bool *flag, bool *dot)
 {
-    size_t  i;
-    size_t  n;
-
-    i = 1;
-    while (i < offset)
-    {
-        if (str[i++] != '.')
-            continue ;
-        while (i < offset)
-        {
-            if (pf_isflagnum(str[i], 1) == 0)
-            {
-                *val = false;
-                return ;
-            }
-            i++;
-        }
-    }
+    if (*dot)
+        return (false);
+    *dot = true;
+    *flag = false;
+    return (true);
 }
 
+static bool valid_asterisk(char *c, bool *flag)
+{
+    *flag = false;
+    if (c[-1] != '%' && c[-1] != '.' 
+        && !(pf_isflag(c[-1]) == 1 && *flag))
+        return (false);
+    return (true);
+}
 
+static bool valid_digit(char *c, bool *flag)
+{
+    if (!(*c == '0' && *flag))
+        *flag = false;
+    if (c[-1] == '*')
+        return (false);
+    return (true);
+}
 
 

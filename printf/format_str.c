@@ -19,8 +19,10 @@ void    format_text(char *str, size_t offset, char end, va_list args)
 {
     if (end == 'c')
         format_c(str, offset, args);
-     else if (end == 's')
+    else if (end == 's')
         format_s(str, offset, args);
+    else if (end == '%')
+        write(1, "%", 1);
 }
 
 static void    format_c(char *str, size_t offset, va_list args)
