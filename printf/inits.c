@@ -24,10 +24,11 @@ void    init_struct(t_form *mod)
     }
     mod->flags[4] = '\0';
     mod->precis = 0;
-    mod->trunc = 0;
+    mod->trunc = -1;
     mod->width = 0;
     mod->len = 0;
     mod->end = '0';
+    mod->except = false;
 }
 
 void    init_buf(char buf[3], char end)

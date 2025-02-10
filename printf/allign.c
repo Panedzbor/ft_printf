@@ -14,31 +14,35 @@
 
 void    allign_left(t_form mod, signed int snum, char *numstr)
 {
+    if (mod.except)
+        return ;
     write_sign(mod, snum);
     write_space(mod, snum);
-    write_prefix(mod);
-    precis_fill(mod);
-    write_arg(numstr, mod.end, mod.trunc);
+    write_prefix(mod, snum);
+    precis_fill(mod, snum);
+    write_arg(numstr, mod.end, mod./*trunc*/len);
     field_fill_num(mod, snum, ' ');
 }
 
 void    allign_right(t_form mod, signed int snum, char *numstr)
 {
+    if (mod.except)
+        return ;
     if (mod.flags[2] != '0' || mod.flags[3] == '.')
     {
         write_space(mod, snum);
         field_fill_num(mod, snum, ' ');
         write_sign(mod, snum);
-        write_prefix(mod);
-        precis_fill(mod);
-        write_arg(numstr, mod.end, mod.trunc);
+        write_prefix(mod, snum);
+        precis_fill(mod, snum);
+        write_arg(numstr, mod.end, mod.len/*trunc*/);
     }
     else
     {
         write_sign(mod, snum);
         write_space(mod, snum);
-        write_prefix(mod);
+        write_prefix(mod, snum);
         field_fill_num(mod, snum, '0');
-        write_arg(numstr, mod.end, mod.trunc);
+        write_arg(numstr, mod.end, mod.len/*trunc*/);
     }
 }

@@ -12,12 +12,12 @@
 
 #include "libftprintf.h"
 
-static bool valid_chars(char *c, bool *flag, bool *dot);
+static bool valid_chars(char *c, bool *flag, bool *dot, bool *flend);
 static bool valid_dot(bool *flag, bool *dot);
 static bool valid_asterisk(char *c, bool *flag);
 static bool valid_digit(char *c, bool *flag);
 
-size_t   find_ending(char *start, bool *val)
+size_t   find_ending(char *start, bool *val, bool *flend)
 {
     size_t  i;
     size_t  e;
@@ -37,7 +37,7 @@ size_t   find_ending(char *start, bool *val)
         }
         if (!(fl_dt[0] && pf_isflag(start[i]) == 1))
         {
-            if (!(valid_chars(&start[i], &fl_dt[0], &fl_dt[1])))
+            if (!(valid_chars(&start[i], &fl_dt[0], &fl_dt[1], flend)))
                 break ;
         }
         i++;
@@ -46,16 +46,17 @@ size_t   find_ending(char *start, bool *val)
     return (i);
 }
 
-static bool valid_chars(char *c, bool *flag, bool *dot)
+static bool valid_chars(char *c, bool *flag, bool *dot, bool *flend)
 {
-    if (pf_isflag(*c) == 1 && !*flag)
+    *flend = true;
+    if (pf_isflag(*c) == 1 && !*flag && *c != '0')
         return (false);
     if (*c == '.')
     {
         if (!(valid_dot(flag, dot)))
             return (false);
     }
-    else if (c == '*')
+    else if (*c == '*')
     {
         if (!(valid_asterisk(c, flag)))
             return (false);
@@ -67,6 +68,7 @@ static bool valid_chars(char *c, bool *flag, bool *dot)
     }
     else
         return (false);
+    *flend = false;
     return (true);
 }
 
@@ -81,10 +83,13 @@ static bool valid_dot(bool *flag, bool *dot)
 
 static bool valid_asterisk(char *c, bool *flag)
 {
-    *flag = false;
     if (c[-1] != '%' && c[-1] != '.' 
         && !(pf_isflag(c[-1]) == 1 && *flag))
+    {
+        *flag = false;
         return (false);
+    }
+    *flag = false;
     return (true);
 }
 

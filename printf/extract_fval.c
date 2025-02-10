@@ -13,7 +13,7 @@
 #include "libftprintf.h"
 
 static void extract_flags(char c, t_form *mod);
-static void extract_numerics(char *str, char ending, va_list args, t_form *mod);
+static void extract_numerics(char *str, size_t offset, va_list args, t_form *mod);
 static void get_asterisk_val(va_list args, t_form *mod, bool *w);
 static int get_number(char *str, t_form *mod, bool *w);
 
@@ -30,7 +30,7 @@ void    extract_format_val(char *str, size_t offset, va_list args, t_form *mod)
         i++;
     }
     mod->end = str[offset];
-    extract_numerics(&str[i], str[offset], args, mod);
+    extract_numerics(&str[i], offset - i, args, mod);
 }
 
 static void extract_flags(char c, t_form *mod)
@@ -47,7 +47,7 @@ static void extract_flags(char c, t_form *mod)
         mod->flags[2] = '0';
 }
 
-static void extract_numerics(char *str, char ending, va_list args, t_form *mod)
+static void extract_numerics(char *str, size_t offset, va_list args, t_form *mod)
 {
     int i;
     int jump;
@@ -55,7 +55,7 @@ static void extract_numerics(char *str, char ending, va_list args, t_form *mod)
     
     w = true;
     i = 0;
-    while (str[i] != ending)
+    while (i < offset)
     {
         jump = 0;
         if (str[i] == '*')
@@ -70,8 +70,6 @@ static void extract_numerics(char *str, char ending, va_list args, t_form *mod)
         i += jump;
         i++;
     }
-    if (mod->trunc == 0 && mod->flags[3] != '.')
-        mod->trunc = mod->len;
 }
 
 static void get_asterisk_val(va_list args, t_form *mod, bool *w)
@@ -82,7 +80,12 @@ static void get_asterisk_val(va_list args, t_form *mod, bool *w)
         *w = false;
     }
     else
-        mod->precis = va_arg(args, int);
+    {
+        if (mod->end != 'c' && mod->end != 's')
+            mod->precis = va_arg(args, int);
+        else
+            mod->trunc = va_arg(args, int);
+    }    
 }
 
 static int get_number(char *str, t_form *mod, bool *w)
@@ -95,6 +98,8 @@ static int get_number(char *str, t_form *mod, bool *w)
     while (ft_isdigit(str[i]) == 1)
         i++;
     s = ft_substr(str, 0, i);
+    if (check_overflow(s))
+        mod->except = true;
     number = ft_atoi((const char *)s);
     free(s);
     if (*w)

@@ -12,15 +12,15 @@
 
 #include "libftprintf.h"
 
-void    write_arg(char *numstr, char end, int trunc)
+void    write_arg(char *numstr, char end, int /*trunc*/ len)
 {
     int i;
 
     i = 0;
     while (numstr[i] != '\0')
     {
-        if (end == 's' && i == trunc)
-            break;
+        if (end == 's' && i == /*trunc*/ len)
+            break ;
         if (numstr[i] != '-')
         {
             if (end != 'X')
@@ -32,10 +32,12 @@ void    write_arg(char *numstr, char end, int trunc)
     }
 }
 
-void    precis_fill(t_form mod)
+void    precis_fill(t_form mod, int num)
 {
     int i;
 
+    if (mod.end == 'p' && num == 0)
+        return ;
     i = 0;
     while (i < mod.precis - mod.len)
     {
@@ -44,8 +46,10 @@ void    precis_fill(t_form mod)
     }
 }
 
-void    write_prefix(t_form mod)
+void    write_prefix(t_form mod, signed int num)
 {
+    if (num == 0)
+        return ;
     if (mod.end == 'p')
         write(1, "0x", 2);
     else if (mod.end == 'x' && mod.flags[0] == '#')
@@ -59,7 +63,7 @@ void    write_sign(t_form mod, signed int num)
     if (num < 0)
         write(1, "-", 1);
     else if (mod.flags[1] == '+' && (mod.end == 'd' || mod.end == 'i' 
-        || mod.end == 'p'))
+        || (mod.end == 'p' && num > 0)))
         write(1, "+", 1);
 }
 
@@ -70,7 +74,7 @@ void    field_fill_num(t_form mod, signed int snum, char fill)
     char *buf[2];
     
     sum = get_sum(mod, snum);
-    if (mod.end == 'c' || mod.end == 's')
+    if (mod.end == 'c' || mod.end == 's' || (mod.end == 'p' && snum == 0))
         fill = ' ';
     buf[0] = fill;
     buf[1] = '\0';

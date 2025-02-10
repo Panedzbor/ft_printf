@@ -12,9 +12,9 @@
 
 #include "libftprintf.h"
 
-static int  define_prefix(t_form mod, int *sppl);
+static int  define_prefix(t_form mod, int *sppl, int snum);
 static int  define_sign(t_form mod, int snum);
-static int  sum_val(int *values);
+static int  sum_val(int *values, t_form mod, int snum);
 
 int get_sum(t_form mod, signed int snum)
 {
@@ -24,8 +24,8 @@ int get_sum(t_form mod, signed int snum)
 
     init_arr(sppl, 4);
     sppl[0] = define_sign(mod, snum);
-    sppl[1] = define_prefix(mod, sppl);
-    if (mod.end == 'p' && mod.precis < 12)
+    sppl[1] = define_prefix(mod, sppl, snum);
+    if (mod.end == 'p' && mod.precis < 12 && snum > 0)
         sppl[2] = 12;
     else
     {
@@ -34,17 +34,21 @@ int get_sum(t_form mod, signed int snum)
         //else
             sppl[2] = mod.precis;
     }
-    trunc = 0;
-    if (mod.len - mod.trunc < 0)
-        trunc = 0;
-    else
-        trunc = mod.len - mod.trunc;
-    sppl[3] = mod.len - trunc;
-    sum = sum_val(sppl);
+    //trunc = 0;
+    //if (mod.len <= mod.trunc) //?? changed < to <=
+    //    trunc = 0;
+    //else
+    //    trunc = mod.len - mod.trunc;
+    /*if (mod.len > mod.trunc)
+        mod.len = mod.trunc;*/
+    //if (mod.end == 'p' && snum == 0)
+    //    trunc = 0;
+    sppl[3] = mod.len;// - trunc;
+    sum = sum_val(sppl, mod, snum);
     return (sum);
 }
 
-static int sum_val(int *values)
+static int sum_val(int *values, t_form mod, int snum)
 {
     int i;
     int result;
@@ -55,7 +59,7 @@ static int sum_val(int *values)
     {
         if (i == 2)
         {
-            if (values[2] > values[3])
+            if (values[2] > values[3] && !(mod.end == 'p' && snum == 0))
                 values[i] = values[2] - values[3];
             else
                 values[i] = 0;
@@ -71,13 +75,15 @@ static int define_sign(t_form mod, int snum)
     if (snum < 0)
         return (1);
     if (mod.flags[1] != '_' &&
-        (mod.end == 'd' || mod.end == 'i' || mod.end == 'p'))
+        (mod.end == 'd' || mod.end == 'i' || (mod.end == 'p' && snum > 0)))
         return (1);
     return (0);
 }
 
-static int define_prefix(t_form mod, int *sppl)
+static int define_prefix(t_form mod, int *sppl, int snum)
 {
+    if (snum == 0)
+        return (0);
     if (mod.end == 'p')
         return (2);
     if ((mod.end == 'x' || mod.end == 'X') && mod.flags[0] == '#')

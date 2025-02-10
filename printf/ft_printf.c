@@ -20,8 +20,10 @@ int ft_printf(const char *fstring, ...)
     size_t  pos;
     size_t  fend;
     //size_t  j;
-    bool    valid;
+    bool    valid[2];
 
+    valid[0] = true;
+    valid[1] = false;
     va_start(args, fstring);
     //int a = va_arg(args, int);
     //pos = a;
@@ -30,8 +32,8 @@ int ft_printf(const char *fstring, ...)
     {
         if (fstring[pos] == '%')
         {
-            valid = true;
-            fend = check_specifier((char *)&fstring[pos], &valid);
+            valid[0] = true;
+            fend = check_specifier((char *)&fstring[pos], valid);
             format_value((char *)&fstring[pos], fend, valid, args);
             pos += fend + 1;
             continue ;
@@ -51,10 +53,10 @@ static size_t  check_specifier(char *start, bool *valid)
 
     //offst = 0;
     val = true;
-    offset = find_ending(start, &val);
+    offset = find_ending(start, &val, &valid[1]);
     if (start[offset] == '\0')
         offset -= 1;
-    if (val == true && *valid == true)
+    if (val == true && valid[0] == true)
         return (offset);
     /*if (start[offset] == '%' && start[offset + 1] != '\0')
     {
@@ -64,8 +66,8 @@ static size_t  check_specifier(char *start, bool *valid)
         else
             offset += offst;
     }*/
-    if (val == true && *valid == false)
+    if (val == true && valid[0] == false)
         return (0);
-    *valid = false;
+    valid[0] = false;
     return (offset);
 }

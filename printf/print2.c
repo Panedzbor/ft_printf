@@ -14,7 +14,7 @@
 
 void    write_space(t_form mod, signed int num)
 {
-    if (mod.end == 'd' || mod.end == 'i' || mod.end == 'p')
+    if (mod.end == 'd' || mod.end == 'i' || (mod.end == 'p' && num > 0))
     {
         if (mod.flags[1] == ' ' && num >= 0)
             write(1, " ", 1);
