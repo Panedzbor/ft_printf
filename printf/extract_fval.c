@@ -85,6 +85,8 @@ static void get_asterisk_val(va_list args, t_form *mod, bool *w)
             mod->precis = va_arg(args, int);
         else
             mod->trunc = va_arg(args, int);
+        if (mod->precis < 0 && check_ending(mod->end))
+            mod->precis = 0;
     }    
 }
 

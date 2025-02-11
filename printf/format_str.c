@@ -42,7 +42,7 @@ static void    format_c(char *str, size_t offset, va_list args)
         mod.len = mod.trunc;
     val[0] = c;
     val[1] = '\0';
-    if (mod.flags[2] == '-')
+    if (mod.flags[2] == '-' || mod.width < 0)
         allign_left(mod, 0, val);
     else
         allign_right(mod, 0, val);
@@ -74,7 +74,7 @@ static void    format_s(char *str, size_t offset, va_list args)
     }
     if (mod.trunc >= 0 && mod.trunc < mod.len)
         mod.len = mod.trunc;
-    if (mod.flags[2] == '-')
+    if (mod.flags[2] == '-' || mod.width < 0)
         allign_left(mod, 0, (char *)string);
     else
         allign_right(mod, 0, (char *)string);

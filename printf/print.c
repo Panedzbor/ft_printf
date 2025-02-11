@@ -78,6 +78,8 @@ void    field_fill_num(t_form mod, signed int snum, char fill)
         fill = ' ';
     buf[0] = fill;
     buf[1] = '\0';
+    if (mod.width < 0)
+        mod.width *= (-1);
     if (mod.width > sum)
     {
         i = 0;

@@ -59,8 +59,8 @@ re: fclean all
 test: re
 	$(CC) -g $(IFLAGS) $(LFLAGS) ../main_test.c -lftprintf -lft
 #	$(CC) -g -m64 $(IFLAGS) ../main_test.c -L. -Llibft -lftprintf -lft -o ../main_test.exe
-#	./a.out > output.txt
-	./a.out
+	./a.out > output.txt
+#	./a.out
 	
 .PHONY: all clean fclean re test
 

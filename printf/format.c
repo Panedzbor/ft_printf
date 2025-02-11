@@ -164,34 +164,42 @@ static void invalid_format(char *str, size_t offset, va_list args, bool flend)
     if (mod.end != '\0')
         write(1, "%", 1);
     i = 0;
-    int z = 0;    
+        
     while (i < 3 && mod.end != '\0')
     {
         if (i == 2 && mod.flags[i] != '-' && num2[0] < 0)
         {    
             write(1, "-", 1);
-            z++;
+            
         }
         if (mod.flags[i] != '_')
         {    
             write(1, &mod.flags[i], 1);
-            z++;
+            
         }
         i++;
     }
-    i = z + 1;
+    i = 0;
+    bool f = false;
     while (i < offset && mod.end != '\0')
     {
-        if ((pf_isflag(str[i]) == 0 || str[i] == '0') && str[i] != '%' && str[i] != '.' && str[i] != '*')
+        if (pf_isflag(str[i]) == 0 && str[i] != '%' && str[i] != '.' && str[i] != '*')
+        {
             write(1, &str[i], 1);
+            f = true;
+        }
+        if (f && str[i] == '0')
+            write(1, "0", 1);
         if (str[i] == '.' && i < offset && num2[1] >= 0)
         {
             write(1, ".", 1);
             if (ft_isdigit(str[i + 1]) == 0 && str[i + 1] != '*')
                 write(1, "0", 1);
+            f = true;
         }
         if (str[i] == '*')
         {
+            f = true;
             int x;
             if (str[i - 1] == '.')
                 x = 1;

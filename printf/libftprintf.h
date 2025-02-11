@@ -51,6 +51,7 @@ int     pf_isflagnum(char c, int mode);
 int     pf_isflag(char c);
 int     pf_isnum(char c);
 bool    check_overflow(char *numstr);
+bool check_ending(char e);
 void    init_struct(t_form *mod);
 void    init_buf(char buf[3], char end);
 void    init_arr(int *arr, int dim);

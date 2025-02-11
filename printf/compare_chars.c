@@ -88,3 +88,17 @@ bool check_overflow(char *numstr)
     }
     return (true);
 }
+
+bool check_ending(char e)
+{
+    int i;
+
+    i = 0;
+    while (endings[i] != '\0')
+    {
+        if (e == endings[i])
+            return (true);
+        i++;
+    }
+    return (false);
+}

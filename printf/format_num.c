@@ -49,7 +49,7 @@ static void    format_d(char *str, size_t offset, va_list args)
         numstr = "";
         mod.len = 0;
     }
-    if (mod.flags[2] == '-')
+    if (mod.flags[2] == '-' || mod.width < 0)
         allign_left(mod, num, (char *)numstr);
     else
         allign_right(mod, num, (char *)numstr);
@@ -75,7 +75,7 @@ static void    format_u(char *str, size_t offset, va_list args)
         numstr = "";
         mod.len = 0;
     }
-    if (mod.flags[2] == '-')
+    if (mod.flags[2] == '-' || mod.width < 0)
         allign_left(mod, 1, (char *)numstr);
     else
         allign_right(mod, 1, (char *)numstr);
@@ -105,7 +105,7 @@ static void    format_x(char *str, size_t offset, va_list args)
         numstr = "";
         mod.len = 0;
     }
-    if (mod.flags[2] == '-')
+    if (mod.flags[2] == '-' || mod.width < 0)
         allign_left(mod, i, (char *)numstr);
     else
         allign_right(mod, i, (char *)numstr);
@@ -136,7 +136,7 @@ static void    format_p(char *str, size_t offset, va_list args)
     mod.len = ft_strlen((char *)numstr);
     if (mod.trunc == 0 && mod.flags[3] != '.')
         mod.trunc = mod.len;
-    if (mod.flags[2] == '-')
+    if (mod.flags[2] == '-' || mod.width < 0)
         allign_left(mod, i, (char *)numstr);
     else
         allign_right(mod, i, (char *)numstr);
