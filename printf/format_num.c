@@ -85,7 +85,7 @@ static void    format_u(char *str, size_t offset, va_list args)
 
 static void    format_x(char *str, size_t offset, va_list args)
 {
-    uintptr_t   num;
+    unsigned int   num;
     const char        *numstr;
     t_form      mod;
     int i;

@@ -1,24 +1,5 @@
 #include "./printf/libftprintf.h"
 
-/*int main()
-{
-    const char *flag = "%s";
-    int x = 5;
-
-    write(1,"\"",1);
-    ft_printf(flag, "Line1\nLine2");
-    fflush(stdout);
-    write(1,"\"",1);
-    printf("\n");
-    write(1,"\"",1);
-    printf(flag, "Line1\nLine2");
-    fflush(stdout);
-    write(1,"\"",1);
-    printf("\n");
-    return 0;
-}*/
-//edge cases: %, %%, %%%%%%..., 0, 1, "s", "", "\0", '\n', '\0', '"', "\", int overflow, max min, several specifiers with args
-
 static int return_type(char end);
 static void test_flag1(int i, int type, char end);
 static char *compose_flag(int i, char end);
@@ -714,12 +695,18 @@ static long dvals[] = {42, 1, 0, -1, -1547, 2147483647, -2147483648, 2147483650,
 int main()
 {
     
-
-    //char ending = '%';
-    //uintptr_t *value = NULL;
+    if (false)
+    {
+                write(1, "\"", 1);
+        ft_printf("%#x", 4294967296);
+                write(1, "\"\n", 2);
+                write(1, "\"", 1);
+        printf("%#x", 4294967296);
+                fflush(stdout);
+                write(1, "\"\n\n", 3);
+        return 0;
+    }
     
-    //int n1 = 20;
-    //int n2 = 3; 
     int type;       
 
     for (int y = 0; ends[y] != '$'; y++)
