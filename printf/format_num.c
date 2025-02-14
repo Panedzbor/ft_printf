@@ -6,7 +6,7 @@
 /*   By: earutiun <earutiun@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 14:33:03 by earutiun          #+#    #+#             */
-/*   Updated: 2025/01/15 14:33:04 by earutiun         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:33:04 by earutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void    format_d(char *str, size_t offset, va_list args)
     num = va_arg(args, int);
     numstr = (const char *)ft_itoa(num);
     mod.len = ft_strlen((char *)numstr);
-    /*if (mod.trunc == 0 && mod.flags[3] != '.')
-        mod.trunc = mod.len;*/
     if (num < 0)
         mod.len -= 1;
     if (num == 0 && mod.precis == 0 && mod.flags[3] == '.')
@@ -54,7 +52,7 @@ static void    format_d(char *str, size_t offset, va_list args)
     else
         allign_right(mod, num, (char *)numstr);
     if (mod.len > 0)
-        free(numstr);
+        free((void *)numstr);
 }
 
 static void    format_u(char *str, size_t offset, va_list args)
@@ -68,8 +66,6 @@ static void    format_u(char *str, size_t offset, va_list args)
     num = va_arg(args, unsigned int);
     numstr = (const char *)ft_utoa(num);
     mod.len = ft_strlen((char *)numstr);
-    /*if (mod.trunc == 0 && mod.flags[3] != '.')
-        mod.trunc = mod.len;*/
     if (num == 0 && mod.precis == 0 && mod.flags[3] == '.')
     {
         numstr = "";
@@ -80,7 +76,7 @@ static void    format_u(char *str, size_t offset, va_list args)
     else
         allign_right(mod, 1, (char *)numstr);
     if (mod.len > 0)
-        free(numstr);
+        free((void *)numstr);
 }
 
 static void    format_x(char *str, size_t offset, va_list args)
@@ -98,8 +94,6 @@ static void    format_x(char *str, size_t offset, va_list args)
         i = 1;
     numstr = (const char *)ft_xtoa((unsigned int)num);
     mod.len = ft_strlen((char *)numstr);
-    /*if (mod.trunc == 0 && mod.flags[3] != '.')
-        mod.trunc = mod.len;*/
     if (num == 0 && mod.precis == 0 && mod.flags[3] == '.')
     {
         numstr = "";
@@ -110,12 +104,11 @@ static void    format_x(char *str, size_t offset, va_list args)
     else
         allign_right(mod, i, (char *)numstr);
     if (mod.len > 0)
-        free(numstr);
+        free((void *)numstr);
 }
 
 static void    format_p(char *str, size_t offset, va_list args)
 {
-    uintptr_t   num;
     void        *ptr;
     const char  *numstr;
     t_form      mod;
@@ -129,8 +122,7 @@ static void    format_p(char *str, size_t offset, va_list args)
         numstr = "(nil)";
     if (ptr)
     {
-        num = (uintptr_t)ptr;
-        numstr = (const char *)ft_ptoa(num);
+        numstr = (const char *)ft_ptoa((uintptr_t)ptr);
         i = 1;
     }    
     mod.len = ft_strlen((char *)numstr);
@@ -141,7 +133,7 @@ static void    format_p(char *str, size_t offset, va_list args)
     else
         allign_right(mod, i, (char *)numstr);
     if (ptr)
-        free(numstr);
+        free((void *)numstr);
 }
 
 

@@ -698,10 +698,10 @@ int main()
     if (false)
     {
                 write(1, "\"", 1);
-        ft_printf("%#x", 4294967296);
+        ft_printf("%k", 42);
                 write(1, "\"\n", 2);
                 write(1, "\"", 1);
-        printf("%#x", 4294967296);
+        printf("%k", 42);
                 fflush(stdout);
                 write(1, "\"\n\n", 3);
         return 0;

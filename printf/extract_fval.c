@@ -15,16 +15,16 @@
 static void extract_flags(char c, t_form *mod);
 static void extract_numerics(char *str, size_t offset, va_list args, t_form *mod);
 static void get_asterisk_val(va_list args, t_form *mod, bool *w);
-static int get_number(char *str, t_form *mod, bool *w);
+static int  get_number(char *str, t_form *mod, bool *w);
 
 void    extract_format_val(char *str, size_t offset, va_list args, t_form *mod)
 {
     int i;
 
     i = 1;
-    while (i < offset)
+    while (i < (int)offset)
     {
-        if ((pf_isflagnum(str[i], 1) == 1 && str[i] != '0') || str[i] == '.')
+        if ((isnum_pf(str[i]) && str[i] != '0') || str[i] == '.')
           break ;
         extract_flags(str[i], mod);
         i++;
@@ -55,7 +55,7 @@ static void extract_numerics(char *str, size_t offset, va_list args, t_form *mod
     
     w = true;
     i = 0;
-    while (i < offset)
+    while (i < (int)offset)
     {
         jump = 0;
         if (str[i] == '*')

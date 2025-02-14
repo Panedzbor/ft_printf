@@ -6,7 +6,7 @@
 /*   By: earutiun <earutiun@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:27:34 by earutiun          #+#    #+#             */
-/*   Updated: 2025/01/15 17:27:36 by earutiun         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:27:36 by earutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,17 @@ void    init_arr(int *arr, int dim)
         arr[i] = 0;
         i++;
     }
+}
+
+void    init_strarr(t_arrs *arrs)
+{
+    arrs->ext[0][0] = -1;
+    arrs->ext[0][1] = -1;
+    arrs->ext[1][0] = -1;
+    arrs->ext[1][1] = -1;
+    arrs->astnumb[0] = false;
+    arrs->astnumb[1] = false;
+    init_arr(arrs->astn, 2);
+    arrs->lnum[0] = -1;
+    arrs->lnum[1] = -1;
 }

@@ -35,7 +35,7 @@ size_t   find_ending(char *start, bool *val, bool *flend)
                 return (i);
             e++;
         }
-        if (!(fl_dt[0] && pf_isflag(start[i]) == 1))
+        if (!(fl_dt[0] && isflag_pf(start[i]) == 1))
         {
             if (!(valid_chars(&start[i], &fl_dt[0], &fl_dt[1], flend)))
                 break ;
@@ -49,7 +49,7 @@ size_t   find_ending(char *start, bool *val, bool *flend)
 static bool valid_chars(char *c, bool *flag, bool *dot, bool *flend)
 {
     *flend = true;
-    if (pf_isflag(*c) == 1 && !*flag && *c != '0')
+    if (isflag_pf(*c) == 1 && !*flag && *c != '0')
         return (false);
     if (*c == '.')
     {
@@ -84,7 +84,7 @@ static bool valid_dot(bool *flag, bool *dot)
 static bool valid_asterisk(char *c, bool *flag)
 {
     if (c[-1] != '%' && c[-1] != '.' 
-        && !(pf_isflag(c[-1]) == 1 && *flag))
+        && !(isflag_pf(c[-1]) == 1 && *flag))
     {
         *flag = false;
         return (false);

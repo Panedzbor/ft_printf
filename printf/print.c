@@ -12,14 +12,14 @@
 
 #include "libftprintf.h"
 
-void    write_arg(char *numstr, char end, int /*trunc*/ len)
+void    write_arg(char *numstr, char end, int len)
 {
     int i;
 
     i = 0;
     while (numstr[i] != '\0')
     {
-        if (end == 's' && i == /*trunc*/ len)
+        if (end == 's' && i == len)
             break ;
         if (numstr[i] != '-')
         {
@@ -71,7 +71,7 @@ void    field_fill_num(t_form mod, signed int snum, char fill)
 {
     int i;
     int sum;
-    char *buf[2];
+    char buf[2];
     
     sum = get_sum(mod, snum);
     if (mod.end == 'c' || mod.end == 's' || (mod.end == 'p' && snum == 0))

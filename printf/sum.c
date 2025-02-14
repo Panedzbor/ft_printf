@@ -12,7 +12,7 @@
 
 #include "libftprintf.h"
 
-static int  define_prefix(t_form mod, int *sppl, int snum);
+static int  define_prefix(t_form mod, int snum);
 static int  define_sign(t_form mod, int snum);
 static int  sum_val(int *values, t_form mod, int snum);
 
@@ -20,30 +20,15 @@ int get_sum(t_form mod, signed int snum)
 {
     int sppl[4]; //sign prefix precision value_len
     int sum;
-    int trunc;
 
     init_arr(sppl, 4);
     sppl[0] = define_sign(mod, snum);
-    sppl[1] = define_prefix(mod, sppl, snum);
+    sppl[1] = define_prefix(mod, snum);
     if (mod.end == 'p' && mod.precis < 12 && snum > 0)
         sppl[2] = 12;
     else
-    {
-       // if (mod.end == 's')
-         //   sppl[2] = -(mod.trunc - mod.len);
-        //else
-            sppl[2] = mod.precis;
-    }
-    //trunc = 0;
-    //if (mod.len <= mod.trunc) //?? changed < to <=
-    //    trunc = 0;
-    //else
-    //    trunc = mod.len - mod.trunc;
-    /*if (mod.len > mod.trunc)
-        mod.len = mod.trunc;*/
-    //if (mod.end == 'p' && snum == 0)
-    //    trunc = 0;
-    sppl[3] = mod.len;// - trunc;
+        sppl[2] = mod.precis;
+    sppl[3] = mod.len;
     sum = sum_val(sppl, mod, snum);
     return (sum);
 }
@@ -80,7 +65,7 @@ static int define_sign(t_form mod, int snum)
     return (0);
 }
 
-static int define_prefix(t_form mod, int *sppl, int snum)
+static int define_prefix(t_form mod, int snum)
 {
     if (snum == 0)
         return (0);

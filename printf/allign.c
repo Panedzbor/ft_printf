@@ -20,7 +20,7 @@ void    allign_left(t_form mod, signed int snum, char *numstr)
     write_space(mod, snum);
     write_prefix(mod, snum);
     precis_fill(mod, snum);
-    write_arg(numstr, mod.end, mod./*trunc*/len);
+    write_arg(numstr, mod.end, mod.len);
     field_fill_num(mod, snum, ' ');
 }
 
@@ -35,7 +35,7 @@ void    allign_right(t_form mod, signed int snum, char *numstr)
         write_sign(mod, snum);
         write_prefix(mod, snum);
         precis_fill(mod, snum);
-        write_arg(numstr, mod.end, mod.len/*trunc*/);
+        write_arg(numstr, mod.end, mod.len);
     }
     else
     {
@@ -43,6 +43,6 @@ void    allign_right(t_form mod, signed int snum, char *numstr)
         write_space(mod, snum);
         write_prefix(mod, snum);
         field_fill_num(mod, snum, '0');
-        write_arg(numstr, mod.end, mod.len/*trunc*/);
+        write_arg(numstr, mod.end, mod.len);
     }
 }

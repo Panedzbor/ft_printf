@@ -6,39 +6,27 @@
 /*   By: earutiun <earutiun@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:07:33 by earutiun          #+#    #+#             */
-/*   Updated: 2025/01/15 16:07:35 by earutiun         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:07:35 by earutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int  pf_isflagnum(char c, int mode)
+int  isflagnum_pf(char c)
 {
     int n;
 
     n = 0;
-    if (mode == 1)
+    while (flags_numerics[n] != '\0')
     {
-        while (numerics[n] != '\0')
-        {
-            if (c == numerics[n])
-                return (1);
-            n++;
-        }
-    }
-    else if (mode == 2)
-    {
-        while (flags_numerics[n] != '\0')
-        {
-            if (c == flags_numerics[n])
-                return (1);
-            n++;
-        }
+        if (c == flags_numerics[n])
+            return (1);
+        n++;
     }
     return (0);
 }
 
-int  pf_isflag(char c)
+int  isflag_pf(char c)
 {
     int n;
 
@@ -52,7 +40,7 @@ int  pf_isflag(char c)
     return (0);
 }
 
-int pf_isnum(char c)
+int isnum_pf(char c)
 {
     int n;
 
