@@ -7,9 +7,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": false,
+      "externalConsole": true,
       "cwd": "c:/Users/1pane/Documents/Github/printf",
-      "program": "c:/Users/1pane/Documents/Github/printf/test.exe",
+      "program": "c:/Users/1pane/Documents/Github/printf/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
