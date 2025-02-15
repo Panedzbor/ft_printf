@@ -21,9 +21,9 @@ int ft_printf(const char *fstring, ...)
     size_t  fend;
     bool    valid[2];
 
+    va_start(args, fstring);
     valid[0] = true;
     valid[1] = false;
-    va_start(args, fstring);
     pos = 0;
     while (fstring[pos] != '\0')
     {
