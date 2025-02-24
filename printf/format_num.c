@@ -44,6 +44,7 @@ static void    format_d(char *str, size_t offset, va_list args)
         mod.len -= 1;
     if (num == 0 && mod.precis == 0 && mod.flags[3] == '.')
     {
+        free((void*)numstr);
         numstr = "";
         mod.len = 0;
     }
@@ -68,6 +69,7 @@ static void    format_u(char *str, size_t offset, va_list args)
     mod.len = ft_strlen((char *)numstr);
     if (num == 0 && mod.precis == 0 && mod.flags[3] == '.')
     {
+        free((void*)numstr);
         numstr = "";
         mod.len = 0;
     }
@@ -96,6 +98,7 @@ static void    format_x(char *str, size_t offset, va_list args)
     mod.len = ft_strlen((char *)numstr);
     if (num == 0 && mod.precis == 0 && mod.flags[3] == '.')
     {
+        free((void*)numstr);
         numstr = "";
         mod.len = 0;
     }
