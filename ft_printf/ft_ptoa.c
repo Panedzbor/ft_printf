@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_xtoa.c                                          :+:      :+:    :+:   */
+/*   ft_ptoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: earutiun <earutiun@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-static int		count_digits(unsigned int n);
-static void		convert(char *number, unsigned int n, int digits);
+static int		count_digits(uintptr_t n);
+static void		convert(char *number, uintptr_t n, int digits);
 
-char	*ft_xtoa(unsigned int n)
+char	*ft_ptoa(uintptr_t n)
 {
 	int					digits;
 	char				*ptr;
@@ -29,7 +29,7 @@ char	*ft_xtoa(unsigned int n)
 	return (ptr);
 }
 
-static int	count_digits(unsigned int n)
+static int	count_digits(uintptr_t n)
 {
 	int	counter;
 
@@ -44,10 +44,10 @@ static int	count_digits(unsigned int n)
 	return (counter);
 }
 
-static void	convert(char *number, unsigned int n, int digits)
+static void	convert(char *number, uintptr_t n, int digits)
 {
-	int	r;
-	int	i;
+	uintptr_t	r;
+	uintptr_t	i;
 
 	r = n % 16;
 	i = n / 16;

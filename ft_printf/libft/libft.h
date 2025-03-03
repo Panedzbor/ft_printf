@@ -52,7 +52,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 		__attribute__((nonnull(1, 2)));
 void	*ft_memmove(void *dest, const void *src, size_t n)
 		__attribute__((nonnull(1, 2)));
-void	*ft_memset(void *s, int c, size_t n);/* __attribute__((nonnull(1))); */
+void	*ft_memset(void *s, int c, size_t n);
 char	*ft_strchr(const char *s, int c)__attribute__((nonnull(1)));
 char	*ft_strdup(const char *s)__attribute__((nonnull));
 size_t	ft_strlcat(char *dest, const char *src, size_t size);

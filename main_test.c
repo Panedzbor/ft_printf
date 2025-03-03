@@ -1,14 +1,14 @@
-#include "./printf/libftprintf.h"
+#include "./ft_printf/ft_printf.h"
 
 static int return_type(char end);
 static void test_flag1(int i, int type, char end);
 static char *compose_flag(int i, char end);
 static void print_val(int type, int v);
 static int count_astrsks(char *flg);
-static void print_test(int (*print_func)(const char *, ...), int ast, int type, char *flg, int v);
+static int print_test(int (*print_func)(const char *, ...), int ast, int type, char *flg, int v);
 static void test_flag2(int i);
 
-char *flgs[] = 
+char *flgs[] =
     {
         "",
         "#",
@@ -652,7 +652,7 @@ char *flgs[] =
         "# +-020.20",
         "$"
     };
-char *flgs1[] = 
+char *flgs1[] =
 {
     "+-*.*",
     "# -.*",
@@ -668,7 +668,7 @@ char *flgs1[] =
     "#0-*.*",
     "$"
 };
-char *flgs2[] = 
+char *flgs2[] =
     {
         "%2147483648.2147483648d",
         "%2147483649.2147483649d",
@@ -688,26 +688,27 @@ char *flgs2[] =
     };
 static int arg1[][2] = {{0, 0}, {10, 10}, {-10, -10}, {7, 7}, {3, 3}, {3, 20}, {20, 3}, {20, 14}, {14, 20}, {10, -10}, {101,0}};
 static char ends[] = {'c','s','d','i','u','x','X','p','%','t','k','\0','$'};
-static char *svals[] = {"42 Berlin Coding Academy", "R", NULL, "", "\0", "$"};
-static char cvals[] = {'a', 64, '$'};
+static char *svals[] = {"42 Berlin - Coding Academy", "R", NULL, "", "\0", "$"};
+static char cvals[] = {'a', 64, '-', '$',};
 static long dvals[] = {42, 1, 0, -1, -1547, 2147483647, -2147483648, 2147483650, -2147483650, 4294967295, 4294967296, 4294967298, '$'};
 
 int main()
 {
-    
+    int x = 1;
+
     if (false)
     {
                 write(1, "\"", 1);
-        ft_printf("%k", 42);
-                write(1, "\"\n", 2);
+        x = ft_printf("%c", 0);
+                write(1, "\" | ", 4); printf("return: %d\n", x);
                 write(1, "\"", 1);
-        printf("%k", 42);
+        x = printf("%c", 0);
                 fflush(stdout);
-                write(1, "\"\n\n", 3);
+                write(1, "\" | ", 4);  printf("return: %d\n", x); write(1, "\n\n", 2);
         return 0;
     }
-    
-    int type;       
+
+    int type;
 
     for (int y = 0; ends[y] != '$'; y++)
     {
@@ -725,16 +726,33 @@ int main()
     {
         test_flag2(i);
     }
-    char *flg = "Mathematically, %.02d%% from %04d %c%c (%#x in hexadecimal) makes profit of %-+*d %-3c (%10s %-.3s %*.*s)";
-    write(1, flg, ft_strlen((const char *)flg));
+    //test3
+    write(1, "%c, 0", 5);
     write(1, "\n", 1);
     write(1, "\"", 1);
-    ft_printf(flg, 5, 100, '$', '$', 100, 4, 20, '$', "twenty", "dollars", 10, 10, "of United States");
-    write(1, "\"\n", 2);
+    x = ft_printf("%c", 0); fflush(stdout);
     write(1, "\"", 1);
-    printf(flg, 5, 100, '$', '$', 100, 4, 20, '$', "twenty", "dollars", 10, 10, "of United States");
+    printf(" (r:%d)\n", x); fflush(stdout);
+    write(1, "\"", 1);
+    x = printf("%c", 0);
     fflush(stdout);
-    write(1, "\"\n\n", 3);
+    write(1, "\"", 1);
+    printf(" (r:%d)\n", x); fflush(stdout);
+    write(1, "\n", 1);
+    //test4
+    char *flg = "Mathematically, %.02d%% from %04d %c%c (%#x in hexadecimal) makes profit of %-+*d %-3c (%10s %-.3s %*.*s)";
+    write(1, flg, ft_strlen((const char *)flg)); write(1, "5, 100, '$', '$', 100, 4, 20, '$', \"twenty\", \"dollars\", 10, 10, \"of United States\"", 82);
+    write(1, "\n", 1);
+    write(1, "\"", 1);
+    x = ft_printf(flg, 5, 100, '$', '$', 100, 4, 20, '$', "twenty", "dollars", 10, 10, "of United States"); fflush(stdout);
+    write(1, "\"", 1);
+    printf(" (r:%d)\n", x); fflush(stdout);
+    write(1, "\"", 1);
+    x = printf(flg, 5, 100, '$', '$', 100, 4, 20, '$', "twenty", "dollars", 10, 10, "of United States");
+    fflush(stdout);
+    write(1, "\"", 1);
+    printf(" (r:%d)\n", x); fflush(stdout);
+    write(1, "\n", 1);
     return 0;
 }
 
@@ -776,7 +794,7 @@ static void test_flag1(int i, int type, char end)
 {
     char *flg = NULL;
     int ast;
-    
+
     int v = 0;
     while (true)
     {
@@ -793,14 +811,11 @@ static void test_flag1(int i, int type, char end)
         write(1, flg, ft_strlen((const char *)flg));
         print_val(type, v);
         write(1, "\n", 1);
-        write(1, "\"", 1);
         ast = count_astrsks(flg);
         print_test(ft_printf, ast, type, flg, v);
-        write(1, "\"\n", 2);
-        write(1, "\"", 1);
         print_test(printf, ast, type, flg, v);
         fflush(stdout);
-        write(1, "\"\n\n", 3);
+        write(1, "\n", 1);
         free(flg);
         v++;
     }
@@ -835,45 +850,95 @@ static void print_val(int type, int v)
     fflush(stdout);
 }
 
-static void print_test(int (*print_func)(const char *, ...), int ast, int type, char *flg, int v)
+static int print_test(int (*print_func)(const char *, ...), int ast, int type, char *flg, int v)
 {
+    int return_val = 0;
+
     if (ast == 0)
     {
         if (type == 1 || type == 4)
-            print_func(flg, svals[v]);
+        {
+            write(1, "\"", 1);
+            return_val = print_func(flg, svals[v]); fflush(stdout);
+            write(1, "\"", 1);
+            printf(" (r:%d)\n", return_val); fflush(stdout);
+        }
         else if (type == 2)
-            print_func(flg, cvals[v]);
+        {
+            write(1, "\"", 1);
+            return_val = print_func(flg, cvals[v]); fflush(stdout);
+            write(1, "\"", 1);
+            printf(" (r:%d)\n", return_val); fflush(stdout);
+        }
         else if (type == 3)
-            print_func(flg, dvals[v]);
+        {
+            write(1, "\"", 1);
+            return_val = print_func(flg, dvals[v]); fflush(stdout);
+            write(1, "\"", 1);
+            printf(" (r:%d)\n", return_val); fflush(stdout);
+        }
     }
     else if (ast == 1)
     {
         for (int n = 0; arg1[n][0] != 101; n++)
         {
             if (type == 1 || type == 4)
-                print_func(flg, arg1[n][0], svals[v]);
+            {
+                write(1, "\"", 1);
+                return_val = print_func(flg, arg1[n][0], svals[v]); fflush(stdout);
+                write(1, "\"", 1);
+                printf(" (r:%d)", return_val); fflush(stdout);
+            }
             else if (type == 2)
-                print_func(flg, arg1[n][0], cvals[v]);
+            {
+                write(1, "\"", 1);
+                return_val = print_func(flg, arg1[n][0], cvals[v]); fflush(stdout);
+                write(1, "\"", 1);
+                printf(" (r:%d)", return_val); fflush(stdout);
+            }
             else if (type == 3)
-                print_func(flg, arg1[n][0], dvals[v]);
+            {
+                write(1, "\"", 1);
+                return_val = print_func(flg, arg1[n][0], dvals[v]); fflush(stdout);
+                write(1, "\"", 1);
+                printf(" (r:%d)", return_val); fflush(stdout);
+            }
             fflush(stdout);
             write(1, " | ", 3);
         }
-    }    
+        write(1, "\n", 1);
+    }
     else
     {
         for (int n = 0; arg1[n][0] != 101; n++)
         {
             if (type == 1 || type == 4)
-                print_func(flg, arg1[n][0], arg1[n][1], svals[v]);
+            {
+                write(1, "\"", 1);
+                return_val = print_func(flg, arg1[n][0], arg1[n][1], svals[v]); fflush(stdout);
+                write(1, "\"", 1);
+                printf(" (r:%d)", return_val); fflush(stdout);
+            }
             else if (type == 2)
-                print_func(flg, arg1[n][0], arg1[n][1], cvals[v]);
+            {
+                write(1, "\"", 1);
+                return_val = print_func(flg, arg1[n][0], arg1[n][1], cvals[v]); fflush(stdout);
+                write(1, "\"", 1);
+                printf(" (r:%d)", return_val); fflush(stdout);
+            }
             else if (type == 3)
-                print_func(flg, arg1[n][0], arg1[n][1], dvals[v]);
+            {
+                write(1, "\"", 1);
+                return_val = print_func(flg, arg1[n][0], arg1[n][1], dvals[v]); fflush(stdout);
+                write(1, "\"", 1);
+                printf(" (r:%d)", return_val); fflush(stdout);
+            }
             fflush(stdout);
             write(1, " | ", 3);
         }
+        write(1, "\n", 1);
     }
+    return 0;
 }
 
 static int count_astrsks(char *flg)
@@ -894,12 +959,9 @@ static void test_flag2(int i)
     write(1, flgs2[i], ft_strlen((const char *)flgs2[i]));
     write(1, ", 42", 4);
     write(1, "\n", 1);
-    write(1, "\"", 1);
     print_test(ft_printf, ast, 3, flgs2[i], 0);
-    write(1, "\"\n", 2);
-    write(1, "\"", 1);
     print_test(printf, ast, 3, flgs2[i], 0);
     fflush(stdout);
-    write(1, "\"\n\n", 3);
+    write(1, "\n", 1);
     //"Mathematically, %.02d%% from %04d %c%c (%#x in hexadecimal) makes profit of %-+*d %-3c (%10s %-.3s %*.*s)"
 }

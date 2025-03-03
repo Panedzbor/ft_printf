@@ -1,7 +1,7 @@
 # rules
 all:
-	$(MAKE) test -C ./printf
+	$(MAKE) test -C ./ft_printf
 
 test: all
-	
+
 .PHONY: all test

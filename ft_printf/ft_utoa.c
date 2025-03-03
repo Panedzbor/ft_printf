@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 static int		count_digits(unsigned int n);
 static void		convert(char *number, unsigned int n, int digits);
